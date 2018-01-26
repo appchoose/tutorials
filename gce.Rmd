@@ -1,0 +1,26 @@
+---
+title: "GCE"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## To enable access to Google Cloud Storage from a VM instance
+
+Answer taken from [StackOverflow](https://stackoverflow.com/questions/27275063/gsutil-copy-returning-accessdeniedexception-403-insufficient-permission-from)
+
+Run the following command:
+
+```
+gsutil config -b
+```
+
+This will generate a link you need to copy and paste in your browser. Copy the authentication key and paste it in the terminal.
+
+By doing so, this will allow you to run commands such as:
+
+```
+gsutil cp 150751_2017-12-22_17#705.json gs://decembertest
+```
