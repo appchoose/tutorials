@@ -1,11 +1,49 @@
 ---
-title: "GCE"
+title: "Amplitude to GCE"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+In this tutorial, we will explain how to export a Amplitude database to Google BigQuery. 
+
+## Export Amplitude files
+
+To retrieve the records from a specific period, you should specify the dates you are interested in by running the following command:
+
+```
+curl -u API_Key:Secret_Key
+'https://amplitude.com/api/2/export?start=20171201&end=20171231' >> december.zip
+```
+
+The archive contains all the records, and these are stored in different JSON files.
+
+## Compatibility
+
+JSON files exported from Amplitude are newline-delimited, which means that they can be exported into the BigQuery format. Yet they have to obey certain rules. For example, fields cannot contain any character that is not alphanumeric or that is not a underscore.
+
+```
+'user_name' # valid
+'user name' # not valid
+'user-name' # not valid 
+```
+
+In case your JSON file has this particular problem, one way to solve this is to manually correct the fields, using the `sed` command (you can create a bash script to automate the file correction).
+
+
+```
+#!/bin/bash
+
+for f in *.json;
+do
+        echo "Processing $f file..";
+        sed -i 's/user name/user_name/g' $f;
+        sed -i 's/user-name/user_name/g' $f;
+done
+```
+
 
 ## To enable access to Google Cloud Storage from a VM instance
 
@@ -17,7 +55,7 @@ Run the following command:
 gsutil config -b
 ```
 
-This will generate a link you need to copy and paste in your browser. Copy the authentication key and paste it in the terminal.
+This will generate a link you need to copy and paste in your browser. Copy the authentication code and paste it in the terminal.
 
 By doing so, this will allow you to run commands such as:
 
