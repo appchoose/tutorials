@@ -62,3 +62,13 @@ By doing so, this will allow you to run commands such as:
 ```
 gsutil cp some_ramdom_file gs://some_random_bucket
 ```
+
+## Append to table
+
+Now that you have all your JSON files stored on Google Cloud Storage, it will be easy to update your BigQuery table.
+
+Note: when you create the VM instance, you should give permission to the BigQuery API. 
+
+```
+bq load --noreplace --source_format=NEWLINE_DELIMITED_JSON --ignore_unknown_values random_dataset.random_table gs://random_bucket/random_file.json schema.json
+```
