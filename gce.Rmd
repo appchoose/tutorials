@@ -22,5 +22,5 @@ This will generate a link you need to copy and paste in your browser. Copy the a
 By doing so, this will allow you to run commands such as:
 
 ```
-gsutil cp 150751_2017-12-22_17#705.json gs://decembertest
+gsutil cp some_ramdom_file gs://some_random_bucket
 ```
