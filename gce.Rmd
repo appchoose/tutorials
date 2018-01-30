@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this tutorial, we will explain how to export a Amplitude database to Google BigQuery. 
+In this tutorial, we will explain how to export an events database to Google BigQuery. In our case, our events are stored on Amplitude.
 
 ## Export Amplitude files
 
@@ -61,6 +61,37 @@ By doing so, this will allow you to run commands such as:
 
 ```
 gsutil cp some_ramdom_file gs://some_random_bucket
+```
+
+## Normalized data
+
+Before creating the table, one should spend some time designing the table schema and ensure that only columns that serve our purpose here will be used (i.e. columns that are related to events). For consistency, I recommend to store the table schema in a JSON file, because specifying the schema everytime using BigQuery UI is far from being convenient. 
+
+```
+[
+    {
+        "mode": "NULLABLE",
+        "name": "event_time",
+        "type": "TIMESTAMP"
+    },
+    {
+        "mode": "NULLABLE",
+        "name": "user_properties",
+        "type": "RECORD",
+        "fields": [
+            {
+                "mode": "NULLABLE",
+                "name": "id",
+                "type": "STRING"
+            }
+        ]
+    },
+    {
+        "mode": "NULLABLE",
+        "name": "event_type",
+        "type": "STRING"
+    }
+]
 ```
 
 ## Append to table
