@@ -1,0 +1,73 @@
+---
+title: "tensorflow-gpu"
+output: html_document
+---
+
+# How to install tensorflow-gpu on a google cloud instance 
+
+When I wanted to run my tensorflow models with a couple of GPUs, I thought I could just add a couple a lines to my code and make it work on the thousands of cores the graphic cards would provide me with. What I didn't realize is that there was actually another library which has been specifically developed for this purpose: `tensorflow-gpu`. And it requires much more effort than a simple `conda install tensorflow-gpu` to make things work. Here's how I proceeded in order to train my neural networks with 2 Tesla K80. 
+
+## Install `gcc` 
+
+
+The first thing you wanna get is a `C++` compiler.
+
+```
+sudo apt-get update
+sudo apt-get install build-essential
+```
+
+You can verify that your installation is successful by running `gcc --version`:
+
+```
+~$ gcc --version
+gcc (Debian 6.3.0-18+deb9u1) 6.3.0 20170516
+Copyright (C) 2016 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+
+## Install the kernel headers 
+
+```
+sudo apt-get install linux-headers-$(uname -r)
+```
+
+## 
+
+```
+~$ sudo dpkg -i cuda-repo-ubuntu1604-9-0-local_9.0.176-1_amd64-deb
+(Reading database ... 73404 files and directories currently installed.)
+Preparing to unpack cuda-repo-ubuntu1604-9-0-local_9.0.176-1_amd64-deb ...
+Unpacking cuda-repo-ubuntu1604-9-0-local (9.0.176-1) over (9.0.176-1) ...
+Setting up cuda-repo-ubuntu1604-9-0-local (9.0.176-1) ...
+The public CUDA GPG key does not appear to be installed.
+To install the key, run this command:
+sudo apt-key add /var/cuda-repo-9-0-local/7fa2af80.pub
+```
+
+```
+sudo apt-key add /var/cuda-repo-9-0-local/7fa2af80.pub
+sudo apt-get update
+sudo apt-get install cuda
+```
+
+```
+tar -xzvf cudnn-9.0-linux-x64-v7.tgz
+sudo cp cuda/include/cudnn.h /usr/local/cuda/include
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+udo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
+```
+
+```
+# cuda/cudnn
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64"
+export CUDA_HOME=/usr/local/cuda
+```
+
+Get the appropriate wheel [here](https://www.tensorflow.org/install/install_linux#the_url_of_the_tensorflow_python_package) for your configuration, or the prompt will show you a red warning.
+
+```
+pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.6.0-cp36-cp36m-linux_x86_64.whl
+
+```

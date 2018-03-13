@@ -1,0 +1,33 @@
+---
+title: "pio"
+output: html_document
+---
+
+In this tutorial we will see how we can customize an engine template to fit our needs. We are going to build a user recommendation system upon Apache PredictionIO's own template. 
+
+## User recommendation system with Apache PredictionIO
+
+We assume here that you have a working install of PredictionIO. Start the servers
+by running `pio-start-all`.
+
+```{bash}
+cd
+source .profile
+pio-start-all
+```
+
+You can check that your system to ready to go with `pio status`.
+
+```{bash}
+cd
+source .profile
+pio status
+```
+
+## Download an engine
+
+```{bash}
+cd
+source .profile
+pio-stop-all
+```
