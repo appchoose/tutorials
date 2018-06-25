@@ -13,7 +13,7 @@ In this tutorial, we will explain how to export an events database to Google Big
 
 To retrieve the records from a specific period, you should specify the dates you are interested in by running the following command:
 
-```
+```shell
 curl -u API_Key:Secret_Key
 'https://amplitude.com/api/2/export?start=20171201&end=20171231' >> december.zip
 ```
