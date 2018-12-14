@@ -5,4 +5,6 @@ sudo amazon-linux-extras install R3.4
 sudo yum install openssl-devel
 sudo su - -c "R -e \"install.packages(c('shiny', 'rmarkdown', 'devtools', 'RJDBC'), repos='http://cran.rstudio.com/')\""
 sudo yum install curl-devel
+wget https://download2.rstudio.org/rstudio-server-rhel-1.1.463-x86_64.rpm
+sudo yum install rstudio-server-rhel-1.1.463-x86_64.rpm
 ```
