@@ -1,0 +1,8 @@
+## Install Shiny Server on EC2
+
+```
+sudo amazon-linux-extras install R3.4
+sudo yum install openssl-devel
+sudo su - -c "R -e \"install.packages(c('shiny', 'rmarkdown', 'devtools', 'RJDBC'), repos='http://cran.rstudio.com/')\""
+sudo yum install curl-devel
+```
