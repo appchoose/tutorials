@@ -1,0 +1,35 @@
+# Petastorm
+
+At Choose we use Petastorm so we can directly feed our Tensorflow models with our Parquet files.
+
+```
+tensorflow='2.0.0-alpha0'
+petastorm='0.7.3'
+```
+
+We are using Petastorm to create Tensorflow datasets, so we need to import tensorflow before Petastorm 
+(otherwise it raises a `Segmentation fault (core dumped)`).
+
+```
+import tensorflow as tf
+import s3fs
+from pyarrow.filesystem import S3FSWrapper
+from petastorm.reader import Reader
+from petastorm.tf_utils import make_petastorm_dataset
+from petastorm.predicates import in_lambda
+```
+
+
+```
+dataset_url_without_protocol_prefix = "analytics.ml.appchoose.co"
+fs = s3fs.S3FileSystem()
+wrapped_fs = S3FSWrapper(fs)
+
+pred = in_lambda(['created_at', 'event_name'], lambda x, y : x > 1555495292 and y in ['ClickItem', 'AddToCart'])
+
+with Reader(pyarrow_filesystem=wrapped_fs, 
+            dataset_path=dataset_url_without_protocol_prefix,
+            predicate=pred) as reader:
+
+    dataset = make_petastorm_dataset(reader)
+``` 
